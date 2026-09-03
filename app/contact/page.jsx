@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Linkedin, Mail, FileDown, MapPin, ArrowLeft, Send, Github } from "lucide-react";
+import { Mail, FileDown, MapPin, ArrowLeft, Send } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { palette, styleSheet } from "@/lib/theme";
 import { Reveal, SectionLabel } from "@/components/Reveal";
 import { SiteTopBar, SiteFooter } from "@/components/SiteChrome";
@@ -76,7 +77,7 @@ export default function ContactPage() {
             className="icon-link flex items-center gap-4 py-4 px-4 rounded"
             style={{ border: `1px solid ${palette.border}` }}
           >
-            <Linkedin size={20} />
+            <LinkedinIcon size={20} />
             <div>
               <p className="text-sm font-medium" style={{ color: palette.text }}>LinkedIn</p>
               <p className="text-xs" style={{ color: palette.muted }}>linkedin.com/in/tom-rolling-6b454229b</p>
@@ -90,7 +91,7 @@ export default function ContactPage() {
             className="icon-link flex items-center gap-4 py-4 px-4 rounded"
             style={{ border: `1px solid ${palette.border}` }}
           >
-            <Github size={20} />
+            <GithubIcon size={20} />
             <div>
               <p className="text-sm font-medium" style={{ color: palette.text }}>GitHub</p>
               <p className="text-xs" style={{ color: palette.muted }}>github.com/TomRolling</p>
