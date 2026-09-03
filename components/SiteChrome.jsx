@@ -17,13 +17,13 @@ export function SiteTopBar({ title = "tomrolling.dev" }) {
 export function WindowBar({ title = "tomrolling.dev" }) {
   return (
     <div
-      className="flex items-center gap-2 px-4 py-2.5"
+      className="relative flex items-center gap-2 px-4 py-2.5"
       style={{ backgroundColor: palette.panel, borderBottom: `1px solid ${palette.border}` }}
     >
       <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#EC6A5E" }} />
       <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#F5BD4F" }} />
       <span className="w-3 h-3 rounded-full" style={{ backgroundColor: "#61C454" }} />
-      <span className="mx-auto text-xs" style={{ color: palette.muted }}>{title}</span>
+      <span className="absolute left-1/2 -translate-x-1/2 text-xs" style={{ color: palette.muted }}>{title}</span>
     </div>
   );
 }
