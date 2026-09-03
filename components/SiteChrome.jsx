@@ -84,7 +84,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer style={{ borderTop: `1px solid ${palette.border}` }}>
-      <div className="px-6 md:px-12 py-8 max-w-2xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="px-6 md:px-12 py-8 max-w-4xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <p className="text-xs" style={{ color: palette.muted }}>
           © {new Date().getFullYear()} Tom Rolling
         </p>
