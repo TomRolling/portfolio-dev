@@ -1,6 +1,7 @@
 "use client";
 
-import { Mail, FileDown } from "lucide-react";
+import { useState } from "react";
+import { Mail, FileDown, Menu, X } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { palette } from "@/lib/theme";
 
@@ -27,19 +28,50 @@ export function WindowBar({ title = "tomrolling.dev" }) {
   );
 }
 
+const NAV_ITEMS = [
+  { href: "/#about", label: "À propos" },
+  { href: "/#projets", label: "Projets" },
+  { href: "/#certifications", label: "Certifications" },
+  { href: "/contact", label: "Contact" },
+];
+
 function SiteHeaderInner() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header
-      className="flex items-center justify-between px-6 py-4 md:px-12 max-w-2xl mx-auto"
+      className="relative flex items-center justify-between px-6 py-4 md:px-12 max-w-2xl mx-auto"
       style={{ backgroundColor: `${palette.bg}F2`, backdropFilter: "blur(6px)", borderBottom: `1px solid ${palette.border}` }}
     >
       <a href="/" className="text-base font-semibold" style={{ color: palette.text, textDecoration: "none" }}>Tom Rolling</a>
+
       <nav className="hidden md:flex items-center gap-8 text-sm">
-        <a href="/#about" className="nav-link">À propos</a>
-        <a href="/#projets" className="nav-link">Projets</a>
-        <a href="/#certifications" className="nav-link">Certifications</a>
-        <a href="/contact" className="nav-link">Contact</a>
+        {NAV_ITEMS.map((item) => (
+          <a key={item.href} href={item.href} className="nav-link">{item.label}</a>
+        ))}
       </nav>
+
+      <button
+        onClick={() => setMenuOpen((v) => !v)}
+        className="md:hidden"
+        style={{ color: palette.text }}
+        aria-label="Menu"
+      >
+        {menuOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
+
+      {menuOpen && (
+        <nav
+          className="md:hidden absolute top-full left-0 right-0 flex flex-col px-6 py-4 gap-4 text-sm"
+          style={{ backgroundColor: palette.bg, borderBottom: `1px solid ${palette.border}` }}
+        >
+          {NAV_ITEMS.map((item) => (
+            <a key={item.href} href={item.href} className="nav-link" onClick={() => setMenuOpen(false)}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }
@@ -56,16 +88,17 @@ export function SiteFooter() {
         <p className="text-xs" style={{ color: palette.muted }}>
           © {new Date().getFullYear()} Tom Rolling
         </p>
-        <nav className="flex items-center gap-6 text-xs">
+        <nav className="flex flex-wrap items-center gap-6 text-xs">
           <a href="/#about" className="nav-link">À propos</a>
           <a href="/#projets" className="nav-link">Projets</a>
+          <a href="/#certifications" className="nav-link">Certifications</a>
           <a href="/contact" className="nav-link">Contact</a>
         </nav>
         <div className="flex items-center gap-5">
           <a href="/contact" aria-label="Contact" className="icon-link"><Mail size={18} /></a>
           <a href="https://www.linkedin.com/in/tom-rolling-6b454229b/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="icon-link"><LinkedinIcon size={18} /></a>
           <a href="https://github.com/TomRolling" target="_blank" rel="noreferrer" aria-label="GitHub" className="icon-link"><GithubIcon size={18} /></a>
-          <a
+          
             href="/CV_Tom_Rolling.pdf"
             download
             className="btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded"
@@ -74,10 +107,6 @@ export function SiteFooter() {
             <FileDown size={14} /> CV
           </a>
         </div>
-      </div>
-      <div className="px-6 md:px-12 pb-8 text-sm max-w-2xl mx-auto" style={{ color: palette.muted }}>
-        <span style={{ color: palette.green }}>$ </span>
-        <span className="caret">▍</span>
       </div>
     </footer>
   );
