@@ -1,0 +1,163 @@
+"use client";
+
+import { useState } from "react";
+import { Linkedin, Mail, FileDown, MapPin, ArrowLeft, Send } from "lucide-react";
+import { palette, styleSheet } from "@/lib/theme";
+import { Reveal, SectionLabel } from "@/components/Reveal";
+import { SiteTopBar, SiteFooter } from "@/components/SiteChrome";
+import { supabase } from "@/lib/supabaseClient";
+import PageViewTracker from "@/components/PageViewTracker";
+
+const emptyForm = { name: "", email: "", message: "" };
+
+export default function ContactPage() {
+  const [form, setForm] = useState(emptyForm);
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("sending");
+    const { error } = await supabase.from("messages").insert({
+      name: form.name,
+      email: form.email,
+      message: form.message,
+    });
+    if (error) {
+      setStatus("error");
+      return;
+    }
+    setForm(emptyForm);
+    setStatus("sent");
+  }
+
+  const inputStyle = {
+    backgroundColor: "transparent",
+    border: `1px solid ${palette.border}`,
+    color: palette.text,
+  };
+
+  return (
+    <div className="font-mono min-h-screen" style={{ backgroundColor: palette.bg, color: palette.text }}>
+      <style>{styleSheet}</style>
+      <PageViewTracker path="/contact" />
+
+      <SiteTopBar title="tomrolling.dev/contact" />
+
+      <section className="px-6 md:px-12 pt-16 pb-20 max-w-2xl mx-auto">
+        <a href="/" className="nav-link inline-flex items-center gap-2 text-xs mb-8">
+          <ArrowLeft size={14} /> Retour à l'accueil
+        </a>
+
+        <Reveal>
+          <SectionLabel>Contact</SectionLabel>
+          <p className="text-sm leading-relaxed mb-2 max-w-lg" style={{ color: palette.muted }}>
+            Je ne suis pas en recherche active, mais je reste ouvert à toute opportunité ou échange intéressant.
+            N'hésite pas à me contacter, par email ou LinkedIn.
+          </p>
+        </Reveal>
+
+        <Reveal className="mt-10 flex flex-col gap-5">
+          <a
+            href="mailto:tom.rolling.pro@gmail.com"
+            className="icon-link flex items-center gap-4 py-4 px-4 rounded"
+            style={{ border: `1px solid ${palette.border}` }}
+          >
+            <Mail size={20} />
+            <div>
+              <p className="text-sm font-medium" style={{ color: palette.text }}>Email</p>
+              <p className="text-xs" style={{ color: palette.muted }}>tom.rolling.pro@gmail.com</p>
+            </div>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/tom-rolling-6b454229b/"
+            target="_blank"
+            rel="noreferrer"
+            className="icon-link flex items-center gap-4 py-4 px-4 rounded"
+            style={{ border: `1px solid ${palette.border}` }}
+          >
+            <Linkedin size={20} />
+            <div>
+              <p className="text-sm font-medium" style={{ color: palette.text }}>LinkedIn</p>
+              <p className="text-xs" style={{ color: palette.muted }}>linkedin.com/in/tom-rolling-6b454229b</p>
+            </div>
+          </a>
+
+          <div className="flex items-center gap-4 py-4 px-4 rounded" style={{ border: `1px solid ${palette.border}` }}>
+            <MapPin size={20} style={{ color: palette.text }} />
+            <div>
+              <p className="text-sm font-medium" style={{ color: palette.text }}>Localisation</p>
+              <p className="text-xs" style={{ color: palette.muted }}>Brignoles (83)</p>
+            </div>
+          </div>
+
+          <a
+            href="/CV_Tom_Rolling.pdf"
+            download
+            className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded mt-2"
+            style={{ backgroundColor: palette.green, color: palette.bg }}
+          >
+            <FileDown size={16} /> Télécharger mon CV
+          </a>
+        </Reveal>
+
+        <Reveal className="mt-14">
+          <h2 className="text-base font-semibold mb-4" style={{ color: palette.text }}>
+            Ou envoie-moi un message directement
+          </h2>
+
+          {status === "sent" ? (
+            <p className="text-sm p-4 rounded" style={{ border: `1px solid ${palette.green}`, color: palette.green }}>
+              Message envoyé, merci ! Je te répondrai dès que possible.
+            </p>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="text"
+                required
+                placeholder="Ton nom"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <input
+                type="email"
+                required
+                placeholder="Ton email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <textarea
+                required
+                rows={5}
+                placeholder="Ton message"
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded"
+                style={{ backgroundColor: palette.green, color: palette.bg }}
+              >
+                <Send size={16} /> {status === "sending" ? "Envoi..." : "Envoyer"}
+              </button>
+              {status === "error" && (
+                <p className="text-xs" style={{ color: "#BF616A" }}>
+                  Une erreur est survenue, réessaie ou passe par email directement.
+                </p>
+              )}
+            </form>
+          )}
+        </Reveal>
+      </section>
+
+      <SiteFooter />
+    </div>
+  );
+}
