@@ -62,7 +62,7 @@ export function SiteFooter() {
           <a href="/contact" className="nav-link">Contact</a>
         </nav>
         <div className="flex items-center gap-5">
-          <a href="mailto:tom.rolling.pro@gmail.com" aria-label="Email" className="icon-link"><Mail size={18} /></a>
+          <a href="/contact" aria-label="Contact" className="icon-link"><Mail size={18} /></a>
           <a href="https://www.linkedin.com/in/tom-rolling-6b454229b/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="icon-link"><LinkedinIcon size={18} /></a>
           <a href="https://github.com/TomRolling" target="_blank" rel="noreferrer" aria-label="GitHub" className="icon-link"><GithubIcon size={18} /></a>
           <a
