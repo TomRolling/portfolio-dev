@@ -39,40 +39,39 @@ function SiteHeaderInner() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header
-      className="relative flex items-center justify-between px-6 py-4 md:px-12 max-w-2xl mx-auto"
-      style={{ backgroundColor: `${palette.bg}F2`, backdropFilter: "blur(6px)", borderBottom: `1px solid ${palette.border}` }}
-    >
-      <a href="/" className="text-base font-semibold" style={{ color: palette.text, textDecoration: "none" }}>Tom Rolling</a>
+    <div style={{ backgroundColor: `${palette.bg}F2`, backdropFilter: "blur(6px)", borderBottom: `1px solid ${palette.border}` }}>
+      <header className="relative flex items-center justify-between px-6 py-4 md:px-12 max-w-2xl mx-auto">
+        <a href="/" className="text-base font-semibold" style={{ color: palette.text, textDecoration: "none" }}>Tom Rolling</a>
 
-      <nav className="hidden md:flex items-center gap-8 text-sm">
-        {NAV_ITEMS.map((item) => (
-          <a key={item.href} href={item.href} className="nav-link">{item.label}</a>
-        ))}
-      </nav>
-
-      <button
-        onClick={() => setMenuOpen((v) => !v)}
-        className="md:hidden"
-        style={{ color: palette.text }}
-        aria-label="Menu"
-      >
-        {menuOpen ? <X size={22} /> : <Menu size={22} />}
-      </button>
-
-      {menuOpen && (
-        <nav
-          className="md:hidden absolute top-full left-0 right-0 flex flex-col px-6 py-4 gap-4 text-sm"
-          style={{ backgroundColor: palette.bg, borderBottom: `1px solid ${palette.border}` }}
-        >
+        <nav className="hidden md:flex items-center gap-8 text-sm">
           {NAV_ITEMS.map((item) => (
-            <a key={item.href} href={item.href} className="nav-link" onClick={() => setMenuOpen(false)}>
-              {item.label}
-            </a>
+            <a key={item.href} href={item.href} className="nav-link">{item.label}</a>
           ))}
         </nav>
-      )}
-    </header>
+
+        <button
+          onClick={() => setMenuOpen((v) => !v)}
+          className="md:hidden"
+          style={{ color: palette.text }}
+          aria-label="Menu"
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+
+        {menuOpen && (
+          <nav
+            className="md:hidden absolute top-full left-0 right-0 flex flex-col px-6 py-4 gap-4 text-sm"
+            style={{ backgroundColor: palette.bg, borderBottom: `1px solid ${palette.border}` }}
+          >
+            {NAV_ITEMS.map((item) => (
+              <a key={item.href} href={item.href} className="nav-link" onClick={() => setMenuOpen(false)}>
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        )}
+      </header>
+    </div>
   );
 }
 
@@ -98,7 +97,12 @@ export function SiteFooter() {
           <a href="/contact" aria-label="Contact" className="icon-link"><Mail size={18} /></a>
           <a href="https://www.linkedin.com/in/tom-rolling-6b454229b/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="icon-link"><LinkedinIcon size={18} /></a>
           <a href="https://github.com/TomRolling" target="_blank" rel="noreferrer" aria-label="GitHub" className="icon-link"><GithubIcon size={18} /></a>
-          <a href="/CV_Tom_Rolling.pdf" download className="btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded" style={{ border: `1px solid ${palette.border}`, color: palette.text }}>
+          
+          <a href="/CV_Tom_Rolling.pdf"
+            download
+            className="btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded"
+            style={{ border: `1px solid ${palette.border}`, color: palette.text }}
+          >
             <FileDown size={14} /> CV
           </a>
         </div>
