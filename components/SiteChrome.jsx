@@ -98,12 +98,7 @@ export function SiteFooter() {
           <a href="/contact" aria-label="Contact" className="icon-link"><Mail size={18} /></a>
           <a href="https://www.linkedin.com/in/tom-rolling-6b454229b/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="icon-link"><LinkedinIcon size={18} /></a>
           <a href="https://github.com/TomRolling" target="_blank" rel="noreferrer" aria-label="GitHub" className="icon-link"><GithubIcon size={18} /></a>
-          
-            href="/CV_Tom_Rolling.pdf"
-            download
-            className="btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded"
-            style={{ border: `1px solid ${palette.border}`, color: palette.text }}
-          >
+          <a href="/CV_Tom_Rolling.pdf" download className="btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded" style={{ border: `1px solid ${palette.border}`, color: palette.text }}>
             <FileDown size={14} /> CV
           </a>
         </div>
