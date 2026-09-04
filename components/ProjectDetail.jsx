@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { palette, styleSheet } from "@/lib/theme";
 import { Reveal } from "@/components/Reveal";
@@ -85,8 +86,16 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
               }
               if (block.type === "image") {
                 return (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={i} src={block.url} alt={block.alt || project.title} className="w-full rounded" style={{ border: `1px solid ${palette.border}` }} />
+                  <Image
+                    key={i}
+                    src={block.url}
+                    alt={block.alt || project.title}
+                    width={1600}
+                    height={900}
+                    sizes="(max-width: 768px) 100vw, 700px"
+                    className="w-full h-auto rounded"
+                    style={{ border: `1px solid ${palette.border}` }}
+                  />
                 );
               }
               if (block.type === "video") {
@@ -124,12 +133,14 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
               <Reveal className="mb-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {project.images.map((src, i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       key={i}
                       src={src}
                       alt={`${project.title} — capture ${i + 1}`}
-                      className="w-full rounded"
+                      width={1200}
+                      height={800}
+                      sizes="(max-width: 640px) 100vw, 340px"
+                      className="w-full h-auto rounded"
                       style={{ border: `1px solid ${palette.border}` }}
                     />
                   ))}

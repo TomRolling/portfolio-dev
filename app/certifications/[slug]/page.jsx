@@ -4,6 +4,16 @@ import ProjectDetail from "@/components/ProjectDetail";
 
 export const revalidate = 0;
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const { data: cert } = await supabase.from("certifications").select("name, organization").eq("slug", slug).single();
+  if (!cert) return {};
+  return {
+    title: cert.name,
+    description: cert.organization ? `Certification ${cert.name} — ${cert.organization}` : `Certification ${cert.name}`,
+  };
+}
+
 export default async function CertificationPage({ params }) {
   const { slug } = await params;
   const { data: cert } = await supabase.from("certifications").select("*").eq("slug", slug).single();
