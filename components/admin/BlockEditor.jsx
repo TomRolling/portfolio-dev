@@ -34,13 +34,53 @@ const blockMetaByType = {
   video: { label: "Vidéo", Icon: Film },
 };
 
+const COLOR_OPTIONS = [
+  { hex: "#A3BE8C", label: "Vert" },
+  { hex: "#88C0D0", label: "Cyan" },
+  { hex: "#E5E9F0", label: "Blanc" },
+  { hex: "#9AA5B1", label: "Gris" },
+  { hex: "#EBCB8B", label: "Jaune" },
+  { hex: "#BF616A", label: "Rouge" },
+];
+
+function ColorPicker({ value, onChange }) {
+  return (
+    <div className="flex items-center gap-2 mt-2">
+      <span className="text-[10px]" style={{ color: palette.muted }}>Couleur :</span>
+      {COLOR_OPTIONS.map((c) => (
+        <button
+          key={c.hex}
+          type="button"
+          title={c.label}
+          onClick={() => onChange(c.hex)}
+          className="w-5 h-5 rounded-full"
+          style={{
+            backgroundColor: c.hex,
+            border: value === c.hex ? `2px solid ${palette.text}` : `1px solid ${palette.border}`,
+          }}
+        />
+      ))}
+      <input
+        type="color"
+        value={value || "#A3BE8C"}
+        onChange={(e) => onChange(e.target.value)}
+        title="Couleur personnalisée"
+        className="w-5 h-5 rounded-lg overflow-hidden cursor-pointer"
+        style={{ border: `1px solid ${palette.border}`, padding: 0, backgroundColor: "transparent" }}
+      />
+    </div>
+  );
+}
+
 // Editeur de blocs reordonnables : titre, texte (avec mise en forme), image, video.
 // `blocks` et `onChange(newBlocks)` sont controles par le parent (formulaire projet ou certification).
 export default function BlockEditor({ blocks, onChange }) {
   const textareaRefs = useRef({});
 
   function addBlock(type) {
-    onChange([...blocks, { type, text: "", url: "" }]);
+    const base = { type, text: "", url: "" };
+    if (type === "heading") base.color = "#A3BE8C";
+    onChange([...blocks, base]);
   }
 
   function updateBlock(index, patch) {
@@ -109,13 +149,16 @@ export default function BlockEditor({ blocks, onChange }) {
               </div>
 
               {block.type === "heading" && (
-                <input
-                  placeholder="Texte du titre"
-                  value={block.text}
-                  onChange={(e) => updateBlock(i, { text: e.target.value })}
-                  className="w-full px-3 py-2 text-sm rounded-lg outline-none"
-                  style={inputStyle}
-                />
+                <div>
+                  <input
+                    placeholder="Texte du titre"
+                    value={block.text}
+                    onChange={(e) => updateBlock(i, { text: e.target.value })}
+                    className="w-full px-3 py-2 text-sm rounded-lg outline-none"
+                    style={{ ...inputStyle, color: block.color || palette.green }}
+                  />
+                  <ColorPicker value={block.color} onChange={(color) => updateBlock(i, { color })} />
+                </div>
               )}
 
               {block.type === "paragraph" && (
@@ -141,6 +184,7 @@ export default function BlockEditor({ blocks, onChange }) {
                     className="w-full px-3 py-2 text-sm rounded-lg outline-none"
                     style={inputStyle}
                   />
+                  <ColorPicker value={block.color} onChange={(color) => updateBlock(i, { color })} />
                 </div>
               )}
 
@@ -235,7 +279,7 @@ export async function resolveBlocks(blocks, supabase) {
     } else if (block.type === "image" || block.type === "video") {
       resolved.push({ type: block.type, url: block.url || "" });
     } else {
-      resolved.push({ type: block.type, text: block.text || "" });
+      resolved.push({ type: block.type, text: block.text || "", color: block.color || null });
     }
   }
   return resolved;

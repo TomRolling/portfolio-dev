@@ -55,7 +55,7 @@ export default function ContactPageClient() {
       <SiteTopBar title="tomrolling.dev/contact" />
 
       <section className="px-6 md:px-12 pt-16 pb-20 max-w-2xl mx-auto">
-        <a href="/" className="nav-link inline-flex items-center gap-2 text-xs mb-8">
+        <a href="/" className="pill-btn text-xs mb-8" style={{ color: palette.muted }}>
           <ArrowLeft size={14} /> Retour à l'accueil
         </a>
 

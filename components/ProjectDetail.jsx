@@ -57,7 +57,7 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
       <SiteTopBar title={`tomrolling.dev${basePath}/${project.slug}`} />
 
       <article className="px-6 md:px-12 pt-12 pb-20 max-w-2xl mx-auto">
-        <a href={backHref} className="nav-link inline-flex items-center gap-2 text-xs mb-8">
+        <a href={backHref} className="pill-btn text-xs mb-8" style={{ color: palette.muted }}>
           <ArrowLeft size={14} /> {backLabel}
         </a>
 
@@ -79,10 +79,10 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
           <Reveal className="flex flex-col gap-6 mb-10">
             {project.blocks.map((block, i) => {
               if (block.type === "heading") {
-                return <h2 key={i} className="text-xl font-semibold" style={{ color: palette.text }}>{block.text}</h2>;
+                return <h2 key={i} className="text-xl font-semibold" style={{ color: block.color || palette.green }}>{block.text}</h2>;
               }
               if (block.type === "paragraph") {
-                return <p key={i} className="text-sm leading-relaxed" style={{ color: palette.text }}>{formatText(block.text, palette.cyan)}</p>;
+                return <p key={i} className="text-sm leading-relaxed" style={{ color: block.color || palette.text }}>{formatText(block.text, palette.cyan)}</p>;
               }
               if (block.type === "image") {
                 return (

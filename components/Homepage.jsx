@@ -150,7 +150,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
         </div>
         {projects.length > 0 && (
           <Reveal>
-            <a href="/projets" className="nav-link inline-flex items-center gap-2 text-xs mt-4">
+            <a href="/projets" className="pill-btn text-xs mt-4" style={{ color: palette.muted }}>
               Voir tous mes projets <ArrowRight size={13} />
             </a>
           </Reveal>
@@ -195,7 +195,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
             </div>
           )}
           {certifications.length > 0 && (
-            <a href="/certifications" className="nav-link inline-flex items-center gap-2 text-xs mt-4">
+            <a href="/certifications" className="pill-btn text-xs mt-4" style={{ color: palette.muted }}>
               Voir toutes mes certifications <ArrowRight size={13} />
             </a>
           )}
