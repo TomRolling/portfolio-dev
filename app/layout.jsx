@@ -16,6 +16,9 @@ export const metadata = {
     title: "Tom Rolling — Développeur",
     description: "Portfolio de développeur de Tom Rolling — projets, compétences et contact.",
   },
+  verification: {
+    google: "xJlIDXsa0B_6PQ6lWaPSzMlT__PWNCS5pbR1O_PxV90",
+  },
 };
 
 export default function RootLayout({ children }) {
