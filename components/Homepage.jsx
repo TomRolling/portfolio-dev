@@ -119,9 +119,9 @@ export default function Homepage({ projects = [], certifications = [] }) {
                 <div>
                   <h3 className="list-card-title text-base font-medium mb-1">{p.title}</h3>
                   <p className="text-sm mb-3" style={{ color: palette.muted }}>{p.description}</p>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2">
                     {(p.stack || []).map((s) => (
-                      <span key={s} className="text-xs" style={{ color: palette.cyan }}>{s}</span>
+                      <span key={s} className="tech-tag text-xs" style={{ color: palette.cyan }}>{s}</span>
                     ))}
                   </div>
                 </div>

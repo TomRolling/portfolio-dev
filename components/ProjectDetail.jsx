@@ -67,9 +67,9 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
             {project.description}
           </p>
           {(project.stack || []).length > 0 && (
-            <div className="flex flex-wrap gap-3 mb-10">
+            <div className="flex flex-wrap gap-2 mb-10">
               {project.stack.map((s) => (
-                <span key={s} className="text-xs" style={{ color: palette.cyan }}>{s}</span>
+                <span key={s} className="tech-tag text-xs" style={{ color: palette.cyan }}>{s}</span>
               ))}
             </div>
           )}
