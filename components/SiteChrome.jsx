@@ -30,8 +30,8 @@ export function WindowBar({ title = "tomrolling.dev" }) {
 
 const NAV_ITEMS = [
   { href: "/#about", label: "À propos" },
-  { href: "/#projets", label: "Projets" },
-  { href: "/#certifications", label: "Certifications" },
+  { href: "/projets", label: "Projets" },
+  { href: "/certifications", label: "Certifications" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -89,8 +89,8 @@ export function SiteFooter() {
         </p>
         <nav className="flex flex-wrap items-center gap-6 text-xs">
           <a href="/#about" className="nav-link">À propos</a>
-          <a href="/#projets" className="nav-link">Projets</a>
-          <a href="/#certifications" className="nav-link">Certifications</a>
+          <a href="/projets" className="nav-link">Projets</a>
+          <a href="/certifications" className="nav-link">Certifications</a>
           <a href="/contact" className="nav-link">Contact</a>
         </nav>
         <div className="flex items-center gap-5">

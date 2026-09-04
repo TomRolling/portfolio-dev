@@ -57,7 +57,62 @@ export default function ContactPage() {
           </p>
         </Reveal>
 
-        <Reveal className="mt-10 flex flex-col gap-5">
+        <Reveal className="mt-10">
+          {status === "sent" ? (
+            <p className="text-sm p-4 rounded" style={{ border: `1px solid ${palette.green}`, color: palette.green }}>
+              Message envoyé, merci ! Je te répondrai dès que possible.
+            </p>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="text"
+                required
+                placeholder="Ton nom"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <input
+                type="email"
+                required
+                placeholder="Ton email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <textarea
+                required
+                rows={5}
+                placeholder="Ton message"
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="px-3 py-2 text-sm rounded outline-none"
+                style={inputStyle}
+              />
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded"
+                style={{ backgroundColor: palette.green, color: palette.bg }}
+              >
+                <Send size={16} /> {status === "sending" ? "Envoi..." : "Envoyer"}
+              </button>
+              {status === "error" && (
+                <p className="text-xs" style={{ color: "#BF616A" }}>
+                  Une erreur est survenue, réessaie ou passe par email directement.
+                </p>
+              )}
+            </form>
+          )}
+        </Reveal>
+
+        <Reveal className="mt-14 flex flex-col gap-5">
+          <h2 className="text-base font-semibold" style={{ color: palette.text }}>
+            Ou directement par ici
+          </h2>
+
           <a
             href="mailto:tom.rolling.pro@gmail.com"
             className="icon-link flex items-center gap-4 py-4 px-4 rounded"
@@ -114,61 +169,6 @@ export default function ContactPage() {
           >
             <FileDown size={16} /> Télécharger mon CV
           </a>
-        </Reveal>
-
-        <Reveal className="mt-14">
-          <h2 className="text-base font-semibold mb-4" style={{ color: palette.text }}>
-            Ou envoie-moi un message directement
-          </h2>
-
-          {status === "sent" ? (
-            <p className="text-sm p-4 rounded" style={{ border: `1px solid ${palette.green}`, color: palette.green }}>
-              Message envoyé, merci ! Je te répondrai dès que possible.
-            </p>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input
-                type="text"
-                required
-                placeholder="Ton nom"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="px-3 py-2 text-sm rounded outline-none"
-                style={inputStyle}
-              />
-              <input
-                type="email"
-                required
-                placeholder="Ton email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="px-3 py-2 text-sm rounded outline-none"
-                style={inputStyle}
-              />
-              <textarea
-                required
-                rows={5}
-                placeholder="Ton message"
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="px-3 py-2 text-sm rounded outline-none"
-                style={inputStyle}
-              />
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded"
-                style={{ backgroundColor: palette.green, color: palette.bg }}
-              >
-                <Send size={16} /> {status === "sending" ? "Envoi..." : "Envoyer"}
-              </button>
-              {status === "error" && (
-                <p className="text-xs" style={{ color: "#BF616A" }}>
-                  Une erreur est survenue, réessaie ou passe par email directement.
-                </p>
-              )}
-            </form>
-          )}
         </Reveal>
       </section>
 

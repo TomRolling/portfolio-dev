@@ -61,7 +61,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="#projets"
+              href="/projets"
               className="btn-primary inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded"
               style={{ backgroundColor: palette.green, color: palette.bg }}
             >
@@ -104,20 +104,20 @@ export default function Homepage({ projects = [], certifications = [] }) {
         <Reveal>
           <SectionLabel>Projets</SectionLabel>
         </Reveal>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
           {projects.length === 0 && (
             <p className="text-sm py-6" style={{ color: palette.muted }}>
               Aucun projet pour le moment.
             </p>
           )}
-          {projects.map((p) => {
+          {projects.slice(0, 3).map((p) => {
             const detailHref = p.slug ? `/projets/${p.slug}` : p.link;
             const isInternalDetail = Boolean(p.slug);
             const isExternal = !isInternalDetail && p.link && p.link.startsWith("http");
             const content = (
               <>
                 <div>
-                  <h3 className="text-base font-medium mb-1">{p.title}</h3>
+                  <h3 className="list-card-title text-base font-medium mb-1">{p.title}</h3>
                   <p className="text-sm mb-3" style={{ color: palette.muted }}>{p.description}</p>
                   <div className="flex flex-wrap gap-3">
                     {(p.stack || []).map((s) => (
@@ -134,13 +134,13 @@ export default function Homepage({ projects = [], certifications = [] }) {
                   <a
                     href={detailHref}
                     {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
-                    className="project-row flex items-center justify-between gap-6 py-6"
-                    style={{ borderTop: `1px solid ${palette.border}` }}
+                    className="list-card flex items-center justify-between gap-6 p-4 rounded-lg"
+                    style={{ border: `1px solid ${palette.border}` }}
                   >
                     {content}
                   </a>
                 ) : (
-                  <div className="flex items-center justify-between gap-6 py-6" style={{ borderTop: `1px solid ${palette.border}` }}>
+                  <div className="flex items-center justify-between gap-6 p-4 rounded-lg" style={{ border: `1px solid ${palette.border}` }}>
                     {content}
                   </div>
                 )}
@@ -148,6 +148,13 @@ export default function Homepage({ projects = [], certifications = [] }) {
             );
           })}
         </div>
+        {projects.length > 0 && (
+          <Reveal>
+            <a href="/projets" className="nav-link inline-flex items-center gap-2 text-xs mt-4">
+              Voir tous mes projets <ArrowRight size={13} />
+            </a>
+          </Reveal>
+        )}
       </section>
 
       {/* Certifications */}
@@ -159,16 +166,16 @@ export default function Homepage({ projects = [], certifications = [] }) {
               Pas de certification pour le moment — cette section sera mise à jour au fil de mes apprentissages.
             </p>
           ) : (
-            <div className="flex flex-col">
-              {certifications.map((c) => (
-                <div key={c.id} className="py-4 flex items-center justify-between gap-6" style={{ borderTop: `1px solid ${palette.border}` }}>
+            <div className="flex flex-col gap-3">
+              {certifications.slice(0, 3).map((c) => (
+                <div key={c.id} className="list-card flex items-center justify-between gap-6 p-4 rounded-lg" style={{ border: `1px solid ${palette.border}` }}>
                   <div>
                     {c.slug ? (
-                      <a href={`/certifications/${c.slug}`} className="text-sm font-medium" style={{ color: palette.text, textDecoration: "none" }}>
+                      <a href={`/certifications/${c.slug}`} className="list-card-title text-sm font-medium" style={{ color: palette.text, textDecoration: "none" }}>
                         {c.name}
                       </a>
                     ) : (
-                      <p className="text-sm font-medium">{c.name}</p>
+                      <p className="list-card-title text-sm font-medium">{c.name}</p>
                     )}
                     <p className="text-xs" style={{ color: palette.muted }}>
                       {c.organization}{c.cert_date ? ` — ${new Date(c.cert_date).getFullYear()}` : ""}
@@ -186,6 +193,11 @@ export default function Homepage({ projects = [], certifications = [] }) {
                 </div>
               ))}
             </div>
+          )}
+          {certifications.length > 0 && (
+            <a href="/certifications" className="nav-link inline-flex items-center gap-2 text-xs mt-4">
+              Voir toutes mes certifications <ArrowRight size={13} />
+            </a>
           )}
         </Reveal>
       </section>
