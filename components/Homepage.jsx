@@ -111,7 +111,9 @@ export default function Homepage({ projects = [], certifications = [] }) {
             </p>
           )}
           {projects.map((p) => {
-            const isExternal = p.link && p.link.startsWith("http");
+            const detailHref = p.slug ? `/projets/${p.slug}` : p.link;
+            const isInternalDetail = Boolean(p.slug);
+            const isExternal = !isInternalDetail && p.link && p.link.startsWith("http");
             const content = (
               <>
                 <div>
@@ -123,14 +125,14 @@ export default function Homepage({ projects = [], certifications = [] }) {
                     ))}
                   </div>
                 </div>
-                {p.link && <ArrowRight size={18} className="project-arrow shrink-0" style={{ color: palette.muted }} />}
+                {detailHref && <ArrowRight size={18} className="project-arrow shrink-0" style={{ color: palette.muted }} />}
               </>
             );
             return (
               <Reveal key={p.id || p.title}>
-                {p.link ? (
+                {detailHref ? (
                   <a
-                    href={p.link}
+                    href={detailHref}
                     {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
                     className="project-row flex items-center justify-between gap-6 py-6"
                     style={{ borderTop: `1px solid ${palette.border}` }}
@@ -161,16 +163,26 @@ export default function Homepage({ projects = [], certifications = [] }) {
               {certifications.map((c) => (
                 <div key={c.id} className="py-4 flex items-center justify-between gap-6" style={{ borderTop: `1px solid ${palette.border}` }}>
                   <div>
-                    <p className="text-sm font-medium">{c.name}</p>
+                    {c.slug ? (
+                      <a href={`/certifications/${c.slug}`} className="text-sm font-medium" style={{ color: palette.text, textDecoration: "none" }}>
+                        {c.name}
+                      </a>
+                    ) : (
+                      <p className="text-sm font-medium">{c.name}</p>
+                    )}
                     <p className="text-xs" style={{ color: palette.muted }}>
                       {c.organization}{c.cert_date ? ` — ${new Date(c.cert_date).getFullYear()}` : ""}
                     </p>
                   </div>
-                  {c.credential_url && (
+                  {c.slug ? (
+                    <a href={`/certifications/${c.slug}`} className="text-xs" style={{ color: palette.cyan }}>
+                      Voir →
+                    </a>
+                  ) : c.credential_url ? (
                     <a href={c.credential_url} target="_blank" rel="noreferrer" className="text-xs" style={{ color: palette.cyan }}>
                       Voir →
                     </a>
-                  )}
+                  ) : null}
                 </div>
               ))}
             </div>

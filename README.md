@@ -52,7 +52,7 @@ Une fois déployé, on connectera Supabase pour rendre les projets dynamiques (a
 1. Crée un projet sur https://supabase.com
 2. Dans **SQL Editor**, colle et exécute le contenu de `supabase/schema.sql` — ça crée les tables `projects`, `certifications`, `messages` et `page_views`, active la sécurité (RLS), et insère ton projet Jardin Idle
 
-   ⚠️ Si tu as un projet Supabase déjà configuré avec une version précédente de ce schéma, exécute plutôt uniquement les fichiers `supabase/migration_*.sql` que tu n'as pas encore exécutés (`migration_add_messages.sql`, `migration_add_pageviews.sql`), pour ajouter les tables manquantes sans tout recréer.
+   ⚠️ Si tu as un projet Supabase déjà configuré avec une version précédente de ce schéma, exécute plutôt uniquement les fichiers `supabase/migration_*.sql` que tu n'as pas encore exécutés (`migration_add_messages.sql`, `migration_add_pageviews.sql`, `migration_add_project_details.sql`), pour ajouter les tables/colonnes manquantes sans tout recréer.
 3. Dans **Project Settings > API Keys** (onglet "Publishable and secret API keys"), récupère `Project URL` et la clé `Publishable key` (commence par `sb_publishable_...`)
 4. Copie `.env.local.example` vers `.env.local` et colle-y ces deux valeurs
 5. Redémarre `npm run dev` — la page d'accueil va maintenant chercher les projets dans Supabase au lieu d'une liste codée en dur

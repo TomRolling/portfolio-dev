@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
 
 // Enregistre une vue de la page courante, une seule fois au chargement.
-// Aucune donnée personnelle : juste le chemin visité et l'horodatage.
+// Passe par /api/track pour que le pays/la ville soient déduits côté serveur
+// (Vercel), sans jamais transmettre ni stocker l'IP du visiteur.
 export default function PageViewTracker({ path }) {
   useEffect(() => {
-    supabase.from("page_views").insert({ path }).then(() => {});
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path }),
+    }).catch(() => {});
   }, [path]);
 
   return null;

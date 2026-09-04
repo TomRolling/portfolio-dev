@@ -7,6 +7,12 @@ create table if not exists projects (
   description text not null default '',
   stack text[] not null default '{}',
   link text,
+  link_label text not null default 'En savoir plus',
+  slug text unique,
+  content text not null default '',
+  images text[] not null default '{}',
+  video_url text,
+  blocks jsonb not null default '[]'::jsonb,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
@@ -18,6 +24,9 @@ create table if not exists certifications (
   organization text not null default '',
   cert_date date,
   credential_url text,
+  link_label text not null default 'Voir le badge',
+  slug text unique,
+  blocks jsonb not null default '[]'::jsonb,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
@@ -50,6 +59,8 @@ create policy "Ecriture reservee aux utilisateurs connectes (certifications)"
 create table if not exists page_views (
   id uuid primary key default gen_random_uuid(),
   path text not null,
+  country text,
+  city text,
   created_at timestamptz not null default now()
 );
 
@@ -91,10 +102,31 @@ create policy "Lecture des messages reservee aux utilisateurs connectes"
 create policy "Suppression des messages reservee aux utilisateurs connectes"
   on messages for delete
   using (auth.role() = 'authenticated');
-insert into projects (title, description, stack, link, sort_order) values (
+
+-- Bucket de stockage pour les images de projets (lecture publique)
+insert into storage.buckets (id, name, public)
+values ('project-images', 'project-images', true)
+on conflict (id) do nothing;
+
+create policy "Lecture publique des images de projets"
+  on storage.objects for select
+  using (bucket_id = 'project-images');
+
+create policy "Ajout d'images reserve aux utilisateurs connectes"
+  on storage.objects for insert
+  with check (bucket_id = 'project-images' and auth.role() = 'authenticated');
+
+create policy "Suppression d'images reservee aux utilisateurs connectes"
+  on storage.objects for delete
+  using (bucket_id = 'project-images' and auth.role() = 'authenticated');
+
+insert into projects (title, description, stack, link, link_label, slug, content, sort_order) values (
   'Jardin Idle',
   'Jeu incrémental (idle game) de jardinage développé en solo : on clique, on améliore son jardin, on débloque des recherches et un système de prestige. Sauvegarde locale, progression hors-ligne, météo dynamique, et installation en PWA pour jouer même sans connexion.',
   array['JavaScript', 'HTML / CSS', 'PWA (Service Worker)'],
   '/jardin-idle',
+  'Jouer au jeu',
+  'jardin-idle',
+  'Jardin Idle est un jeu incrémental développé en solo, du concept à la mise en ligne. Le joueur cultive et développe son jardin au fil du temps, débloque des recherches, et peut faire un "prestige" pour recommencer avec des bonus permanents.',
   1
 );
