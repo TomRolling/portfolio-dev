@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowUp, ArrowDown, Trash2, Heading, Type, Image as ImageIcon, Film, Bold, Underline, Link2 } from "lucide-react";
+import { ArrowUp, ArrowDown, Trash2, Heading, Type, Image as ImageIcon, Film, FileText, Bold, Underline, Link2 } from "lucide-react";
 
 const palette = {
   bg: "#2E3440",
@@ -32,7 +32,10 @@ const blockMetaByType = {
   paragraph: { label: "Texte", Icon: Type },
   image: { label: "Image", Icon: ImageIcon },
   video: { label: "Vidéo", Icon: Film },
+  pdf: { label: "PDF", Icon: FileText },
 };
+
+const FILE_BLOCK_TYPES = ["image", "video", "pdf"];
 
 const COLOR_OPTIONS = [
   { hex: "#A3BE8C", label: "Vert" },
@@ -209,6 +212,43 @@ export default function BlockEditor({ blocks, onChange }) {
                 </div>
               )}
 
+              {block.type === "pdf" && (
+                <div className="flex flex-col gap-2">
+                  {block.file ? (
+                    <p className="text-xs" style={{ color: palette.green }}>Fichier sélectionné : {block.file.name}</p>
+                  ) : block.url ? (
+                    <a href={block.url} target="_blank" rel="noreferrer" className="text-xs truncate" style={{ color: palette.muted }}>{block.url}</a>
+                  ) : null}
+                  <Field label="Envoyer un fichier PDF">
+                    <input
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        const guessedLabel = file ? file.name.replace(/\.pdf$/i, "") : "";
+                        updateBlock(i, { file, text: block.text || guessedLabel });
+                      }}
+                      className="text-xs"
+                      style={{ color: palette.muted }}
+                    />
+                  </Field>
+                  <Field label="Nom affiché du document (optionnel)">
+                    <input
+                      placeholder="Attestation de suivi"
+                      value={block.text || ""}
+                      onChange={(e) => updateBlock(i, { text: e.target.value })}
+                      className="w-full px-3 py-2 text-sm rounded-lg outline-none"
+                      style={inputStyle}
+                    />
+                  </Field>
+                  {block.file && (
+                    <button type="button" onClick={() => updateBlock(i, { file: null })} className="text-xs self-start" style={{ color: palette.red }}>
+                      Retirer le fichier
+                    </button>
+                  )}
+                </div>
+              )}
+
               {block.type === "video" && (
                 <div className="flex flex-col gap-2">
                   {block.file ? (
@@ -261,23 +301,28 @@ export default function BlockEditor({ blocks, onChange }) {
         <button type="button" onClick={() => addBlock("video")} className="admin-pill inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg" style={{ border: `1px solid ${palette.border}`, color: palette.text }}>
           <Film size={13} /> Vidéo
         </button>
+        <button type="button" onClick={() => addBlock("pdf")} className="admin-pill inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg" style={{ border: `1px solid ${palette.border}`, color: palette.text }}>
+          <FileText size={13} /> PDF
+        </button>
       </div>
     </div>
   );
 }
 
-// Convertit les blocs "image"/"vidéo" ayant un fichier en attente en URL réelle
+// Convertit les blocs "image"/"vidéo"/"PDF" ayant un fichier en attente en URL réelle
 // (upload vers Supabase Storage), pour préparer l'enregistrement en base.
 export async function resolveBlocks(blocks, supabase) {
   const resolved = [];
   for (const block of blocks) {
-    if ((block.type === "image" || block.type === "video") && block.file) {
-      const path = `${Date.now()}-${block.file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-      const { error } = await supabase.storage.from("project-images").upload(path, block.file);
-      const url = error ? block.url || "" : supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
-      resolved.push({ type: block.type, url });
-    } else if (block.type === "image" || block.type === "video") {
-      resolved.push({ type: block.type, url: block.url || "" });
+    if (FILE_BLOCK_TYPES.includes(block.type)) {
+      let url = block.url || "";
+      if (block.file) {
+        const path = `${Date.now()}-${block.file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+        const { error } = await supabase.storage.from("project-images").upload(path, block.file);
+        if (!error) url = supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
+      }
+      // le PDF garde en plus son libellé d'affichage
+      resolved.push(block.type === "pdf" ? { type: "pdf", url, text: block.text || "" } : { type: block.type, url });
     } else {
       resolved.push({ type: block.type, text: block.text || "", color: block.color || null });
     }

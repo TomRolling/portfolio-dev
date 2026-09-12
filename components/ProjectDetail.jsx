@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, ExternalLink } from "lucide-react";
 import { palette, styleSheet } from "@/lib/theme";
 import { Reveal } from "@/components/Reveal";
 import { SiteTopBar, SiteFooter } from "@/components/SiteChrome";
@@ -96,6 +96,31 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
                     className="w-full h-auto rounded"
                     style={{ border: `1px solid ${palette.border}` }}
                   />
+                );
+              }
+              if (block.type === "pdf") {
+                if (!block.url) return null;
+                const label = block.text || "Document PDF";
+                return (
+                  <div key={i} className="rounded overflow-hidden" style={{ border: `1px solid ${palette.border}` }}>
+                    <div className="flex items-center justify-between gap-3 px-4 py-3" style={{ backgroundColor: palette.panel }}>
+                      <span className="inline-flex items-center gap-2 text-sm min-w-0">
+                        <FileText size={15} style={{ color: palette.green, flexShrink: 0 }} />
+                        <span className="truncate">{label}</span>
+                      </span>
+                      <a href={block.url} target="_blank" rel="noreferrer" className="pill-btn text-xs shrink-0" style={{ color: palette.muted }}>
+                        Ouvrir <ExternalLink size={13} />
+                      </a>
+                    </div>
+                    {/* aperçu integre : les navigateurs mobiles ne savent pas afficher un PDF en iframe */}
+                    <iframe
+                      src={`${block.url}#view=FitH`}
+                      title={label}
+                      loading="lazy"
+                      className="hidden md:block w-full"
+                      style={{ height: 620, border: 0, borderTop: `1px solid ${palette.border}`, backgroundColor: palette.bg }}
+                    />
+                  </div>
                 );
               }
               if (block.type === "video") {
