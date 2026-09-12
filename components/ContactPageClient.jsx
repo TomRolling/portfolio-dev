@@ -62,8 +62,9 @@ export default function ContactPageClient() {
         <Reveal>
           <SectionLabel>Contact</SectionLabel>
           <p className="text-sm leading-relaxed mb-2 max-w-lg" style={{ color: palette.muted }}>
-            Je ne suis pas en recherche active, mais je reste ouvert à toute opportunité ou échange intéressant.
-            N'hésite pas à me contacter, par email ou LinkedIn.
+            Je suis actuellement à la recherche d'un poste de développeur, disponible immédiatement,
+            en télétravail ou en hybride. Une opportunité, une mission ou simplement un échange :
+            écris-moi par email, sur LinkedIn ou avec le formulaire ci-dessous.
           </p>
         </Reveal>
 

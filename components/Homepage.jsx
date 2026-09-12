@@ -56,8 +56,12 @@ export default function Homepage({ projects = [], certifications = [] }) {
           <h1 className="text-2xl md:text-3xl font-medium leading-normal mb-4" style={{ color: palette.text }}>
             Développeur curieux, j'aime comprendre comment les choses fonctionnent pour mieux les optimiser.
           </h1>
-          <p className="text-sm leading-relaxed mb-8" style={{ color: palette.muted }}>
-            BTS SIO en alternance. Je présente ici mes projets de développement personnels.
+          <p className="text-sm leading-relaxed mb-5" style={{ color: palette.muted }}>
+            Développeur autodidacte, titulaire d'un BTS SIO. Je présente ici mes projets de développement personnels.
+          </p>
+          <p className="status-badge text-xs mb-8" style={{ color: palette.green }}>
+            <span className="status-dot" />
+            Ouvert aux opportunités en développement — disponible dès maintenant, en télétravail ou hybride
           </p>
           <div className="flex flex-wrap gap-3">
             <a
@@ -83,7 +87,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
         <Reveal>
           <SectionLabel>À propos</SectionLabel>
           <p className="text-sm leading-relaxed mb-6" style={{ color: palette.muted }}>
-            BTS SIO en alternance. Je suis quelqu'un de carré, qui aime creuser un sujet à fond et trouver comment l'améliorer. À l'aise en Python, PHP et MySQL, je développe aussi mes projets personnels pour explorer le développement web.
+            Je suis quelqu'un de carré, qui aime creuser un sujet à fond et trouver comment l'améliorer. À l'aise en Python, PHP et MySQL, je développe aussi mes projets personnels pour explorer le développement web — de l'idée à la mise en ligne.
           </p>
           <div className="flex flex-wrap gap-2">
             {skills.map((s) => (

@@ -8,13 +8,18 @@ export const metadata = {
     default: "Tom Rolling — Développeur",
     template: "%s — Tom Rolling",
   },
-  description: "Portfolio de développeur de Tom Rolling — projets, compétences et contact.",
+  description: "Tom Rolling, développeur autodidacte titulaire d'un BTS SIO. Projets personnels en Python, PHP et JavaScript — actuellement en recherche d'un poste.",
   openGraph: {
     type: "website",
     locale: "fr_FR",
     siteName: "Tom Rolling",
     title: "Tom Rolling — Développeur",
-    description: "Portfolio de développeur de Tom Rolling — projets, compétences et contact.",
+    description: "Tom Rolling, développeur autodidacte titulaire d'un BTS SIO. Projets personnels en Python, PHP et JavaScript — actuellement en recherche d'un poste.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tom Rolling — Développeur",
+    description: "Tom Rolling, développeur autodidacte titulaire d'un BTS SIO. Projets personnels en Python, PHP et JavaScript — actuellement en recherche d'un poste.",
   },
   verification: {
     google: "xJlIDXsa0B_6PQ6lWaPSzMlT__PWNCS5pbR1O_PxV90",
