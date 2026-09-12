@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { setAdminDevice } from "@/lib/tracking";
 
 const palette = {
   bg: "#2E3440",
@@ -30,6 +31,8 @@ export default function LoginPage() {
       setError("Email ou mot de passe incorrect.");
       return;
     }
+    // Cet appareil est le tien : ses visites ne sont plus comptées dans le trafic.
+    setAdminDevice(true);
     router.push("/admin");
     router.refresh();
   }

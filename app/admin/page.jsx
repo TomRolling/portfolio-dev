@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Plus, Loader2, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import BlockEditor, { resolveBlocks } from "@/components/admin/BlockEditor";
+import { isAdminDevice, setAdminDevice } from "@/lib/tracking";
 
 const palette = {
   bg: "#2E3440",
@@ -151,12 +152,16 @@ export default function AdminPage() {
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [showCertForm, setShowCertForm] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [selfExcluded, setSelfExcluded] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
         router.replace("/admin/login");
       } else {
+        // On reflète l'état choisi pour cet appareil (posé à la connexion, modifiable
+        // depuis l'onglet Trafic) sans l'écraser à chaque ouverture de l'admin.
+        setSelfExcluded(isAdminDevice());
         setChecking(false);
         loadAll();
       }
@@ -216,6 +221,13 @@ export default function AdminPage() {
     });
 
     setTraffic({ total: total ?? 0, today, yesterday, last7, prev7, weekOverWeek, avgPerDay, last30: rows.length, byPath, byCountry, last30Days });
+  }
+
+  function toggleSelfExclusion() {
+    const next = !selfExcluded;
+    setAdminDevice(next);
+    // on relit le stockage : s'il est indisponible, la bascule n'a pas pris effet
+    setSelfExcluded(isAdminDevice());
   }
 
   async function deleteMessage(id) {
@@ -405,6 +417,23 @@ export default function AdminPage() {
         {/* Trafic */}
         {tab === "traffic" && (
           <div>
+            {/* Tes propres visites sont exclues du comptage depuis cet appareil */}
+            <div className="admin-card flex items-center justify-between gap-3 p-3 mb-4 rounded-lg" style={{ border: `1px solid ${palette.border}`, backgroundColor: palette.panel }}>
+              <span className="text-xs" style={{ color: palette.muted }}>
+                {selfExcluded
+                  ? "Tes visites depuis cet appareil ne sont pas comptées."
+                  : "Tes visites depuis cet appareil sont comptées comme celles des autres."}
+              </span>
+              <button
+                type="button"
+                onClick={toggleSelfExclusion}
+                className="admin-pill shrink-0 px-3 py-1.5 text-xs rounded-lg"
+                style={{ border: `1px solid ${palette.border}`, color: palette.text }}
+              >
+                {selfExcluded ? "Les compter" : "Les exclure"}
+              </button>
+            </div>
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
               {[
                 { label: "Total", value: traffic.total },
