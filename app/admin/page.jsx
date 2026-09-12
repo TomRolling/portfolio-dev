@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Plus, Loader2, ArrowUp, ArrowDown } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import BlockEditor, { resolveBlocks } from "@/components/admin/BlockEditor";
-import { isAdminDevice, setAdminDevice } from "@/lib/tracking";
+import { ensureAdminDevice, isAdminDevice, setAdminDevice } from "@/lib/tracking";
 
 const palette = {
   bg: "#2E3440",
@@ -159,8 +159,9 @@ export default function AdminPage() {
       if (!data.session) {
         router.replace("/admin/login");
       } else {
-        // On reflète l'état choisi pour cet appareil (posé à la connexion, modifiable
-        // depuis l'onglet Trafic) sans l'écraser à chaque ouverture de l'admin.
+        // Détenir une session admin marque l'appareil comme étant le tien, sauf si
+        // tu as explicitement choisi l'inverse dans l'onglet Trafic.
+        ensureAdminDevice();
         setSelfExcluded(isAdminDevice());
         setChecking(false);
         loadAll();

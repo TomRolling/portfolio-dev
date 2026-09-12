@@ -75,7 +75,7 @@ function ColorPicker({ value, onChange }) {
   );
 }
 
-// Editeur de blocs reordonnables : titre, texte (avec mise en forme), image, video.
+// Editeur de blocs reordonnables : titre, texte (avec mise en forme), image, video, PDF.
 // `blocks` et `onChange(newBlocks)` sont controles par le parent (formulaire projet ou certification).
 export default function BlockEditor({ blocks, onChange }) {
   const textareaRefs = useRef({});
@@ -309,23 +309,27 @@ export default function BlockEditor({ blocks, onChange }) {
   );
 }
 
-// Convertit les blocs "image"/"vidéo"/"PDF" ayant un fichier en attente en URL réelle
-// (upload vers Supabase Storage), pour préparer l'enregistrement en base.
+// Convertit les blocs porteurs d'un fichier en attente en URL réelle (upload
+// vers Supabase Storage), pour préparer l'enregistrement en base.
+// Les uploads partent en parallèle : `map` + `Promise.all` conserve l'ordre des
+// blocs, et le chemin de destination inclut l'index pour que deux fichiers de
+// même nom envoyés dans la même milliseconde n'écrasent pas le même objet.
 export async function resolveBlocks(blocks, supabase) {
-  const resolved = [];
-  for (const block of blocks) {
-    if (FILE_BLOCK_TYPES.includes(block.type)) {
+  return Promise.all(
+    blocks.map(async (block, i) => {
+      if (!FILE_BLOCK_TYPES.includes(block.type)) {
+        return { type: block.type, text: block.text || "", color: block.color || null };
+      }
+
       let url = block.url || "";
       if (block.file) {
-        const path = `${Date.now()}-${block.file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+        const safeName = block.file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+        const path = `${Date.now()}-${i}-${safeName}`;
         const { error } = await supabase.storage.from("project-images").upload(path, block.file);
         if (!error) url = supabase.storage.from("project-images").getPublicUrl(path).data.publicUrl;
       }
-      // le PDF garde en plus son libellé d'affichage
-      resolved.push(block.type === "pdf" ? { type: "pdf", url, text: block.text || "" } : { type: block.type, url });
-    } else {
-      resolved.push({ type: block.type, text: block.text || "", color: block.color || null });
-    }
-  }
-  return resolved;
+      // `text` sert de libellé au bloc fichier (nom du PDF, texte alternatif d'une image)
+      return { type: block.type, url, text: block.text || "" };
+    })
+  );
 }

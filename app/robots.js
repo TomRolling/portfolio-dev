@@ -1,4 +1,4 @@
-const siteUrl = "https://tomrolling.vercel.app";
+import { site } from "@/lib/site";
 
 export default function robots() {
   return {
@@ -7,6 +7,6 @@ export default function robots() {
       allow: "/",
       disallow: ["/admin"],
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: `${site.url}/sitemap.xml`,
   };
 }
