@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, FileText, ExternalLink } from "lucide-react";
 import { palette, styleSheet } from "@/lib/theme";
@@ -40,6 +41,49 @@ function formatText(text, cyan) {
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));
   return parts;
+}
+
+// Une iframe masquee en CSS telecharge quand meme sa source : on ne la monte
+// donc qu'au-dessus de 768px, largeur a partir de laquelle l'apercu est lisible
+// (les navigateurs mobiles n'affichent pas les PDF en iframe de toute facon).
+function useIsDesktop(minWidth = 768) {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia(`(min-width: ${minWidth}px)`);
+    const update = () => setIsDesktop(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, [minWidth]);
+  return isDesktop;
+}
+
+function PdfBlock({ url, text }) {
+  const label = text || "Document PDF";
+  const isDesktop = useIsDesktop();
+
+  return (
+    <div className="rounded overflow-hidden" style={{ border: `1px solid ${palette.border}` }}>
+      <div className="flex items-center justify-between gap-3 px-4 py-3" style={{ backgroundColor: palette.panel }}>
+        <span className="inline-flex items-center gap-2 text-sm min-w-0">
+          <FileText size={15} style={{ color: palette.green, flexShrink: 0 }} />
+          <span className="truncate">{label}</span>
+        </span>
+        <a href={url} target="_blank" rel="noreferrer" className="pill-btn text-xs shrink-0" style={{ color: palette.muted }}>
+          Ouvrir <ExternalLink size={13} />
+        </a>
+      </div>
+      {isDesktop && (
+        <iframe
+          src={`${url}#view=FitH`}
+          title={label}
+          loading="lazy"
+          className="w-full"
+          style={{ height: 620, border: 0, borderTop: `1px solid ${palette.border}`, backgroundColor: palette.bg }}
+        />
+      )}
+    </div>
+  );
 }
 
 export default function ProjectDetail({ project, basePath = "/projets", backHref = "/#projets", backLabel = "Retour aux projets" }) {
@@ -89,7 +133,7 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
                   <Image
                     key={i}
                     src={block.url}
-                    alt={block.alt || project.title}
+                    alt={block.text || project.title}
                     width={1600}
                     height={900}
                     sizes="(max-width: 768px) 100vw, 700px"
@@ -99,29 +143,7 @@ export default function ProjectDetail({ project, basePath = "/projets", backHref
                 );
               }
               if (block.type === "pdf") {
-                if (!block.url) return null;
-                const label = block.text || "Document PDF";
-                return (
-                  <div key={i} className="rounded overflow-hidden" style={{ border: `1px solid ${palette.border}` }}>
-                    <div className="flex items-center justify-between gap-3 px-4 py-3" style={{ backgroundColor: palette.panel }}>
-                      <span className="inline-flex items-center gap-2 text-sm min-w-0">
-                        <FileText size={15} style={{ color: palette.green, flexShrink: 0 }} />
-                        <span className="truncate">{label}</span>
-                      </span>
-                      <a href={block.url} target="_blank" rel="noreferrer" className="pill-btn text-xs shrink-0" style={{ color: palette.muted }}>
-                        Ouvrir <ExternalLink size={13} />
-                      </a>
-                    </div>
-                    {/* aperçu integre : les navigateurs mobiles ne savent pas afficher un PDF en iframe */}
-                    <iframe
-                      src={`${block.url}#view=FitH`}
-                      title={label}
-                      loading="lazy"
-                      className="hidden md:block w-full"
-                      style={{ height: 620, border: 0, borderTop: `1px solid ${palette.border}`, backgroundColor: palette.bg }}
-                    />
-                  </div>
-                );
+                return block.url ? <PdfBlock key={i} url={block.url} text={block.text} /> : null;
               }
               if (block.type === "video") {
                 const embed = getVideoEmbedUrl(block.url);
