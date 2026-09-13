@@ -657,7 +657,7 @@ export default function AdminPage() {
                       style={inputStyle}
                     />
                   </Field>
-                  <Field label="Lien vers lequel il pointe (GitHub, démo, ou chemin interne comme /jardin-idle)">
+                  <Field label="Lien vers lequel il pointe (GitHub, démo en ligne, ou chemin interne du site)">
                     <input
                       placeholder="https://github.com/..."
                       value={projectForm.link}

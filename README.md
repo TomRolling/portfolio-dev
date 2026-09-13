@@ -22,8 +22,6 @@ app/
   globals.css       -> styles globaux + Tailwind
 components/
   Homepage.jsx      -> tout le contenu de la page (hero, à propos, projets, contact)
-public/
-  jardin-idle/      -> le jeu Jardin Idle, servi tel quel sur /jardin-idle
 ```
 
 ## Déployer sur Vercel

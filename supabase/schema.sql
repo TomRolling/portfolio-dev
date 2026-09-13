@@ -121,12 +121,12 @@ create policy "Suppression d'images reservee aux utilisateurs connectes"
   using (bucket_id = 'project-images' and auth.role() = 'authenticated');
 
 insert into projects (title, description, stack, link, link_label, slug, content, sort_order) values (
-  'Jardin Idle',
+  'FUZZ',
   'Jeu incrémental (idle game) de jardinage développé en solo : on clique, on améliore son jardin, on débloque des recherches et un système de prestige. Sauvegarde locale, progression hors-ligne, météo dynamique, et installation en PWA pour jouer même sans connexion.',
   array['JavaScript', 'HTML / CSS', 'PWA (Service Worker)'],
-  '/jardin-idle',
-  'Jouer au jeu',
+  'https://github.com/TomRolling/FUZZ',
+  'Voir sur GitHub',
   'jardin-idle',
-  'Jardin Idle est un jeu incrémental développé en solo, du concept à la mise en ligne. Le joueur cultive et développe son jardin au fil du temps, débloque des recherches, et peut faire un "prestige" pour recommencer avec des bonus permanents.',
+  'FUZZ est un jeu incrémental développé en solo, du concept à la mise en ligne. Le joueur cultive et développe son jardin au fil du temps, débloque des recherches, et peut faire un "prestige" pour recommencer avec des bonus permanents.',
   1
 );
