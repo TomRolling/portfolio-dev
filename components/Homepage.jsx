@@ -61,7 +61,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
           </p>
           <p className="status-badge text-xs mb-8" style={{ color: palette.green }}>
             <span className="status-dot" />
-            Ouvert aux opportunités en développement — disponible dès maintenant, en télétravail ou hybride
+            Ouvert aux opportunités en développement, disponible dès maintenant en télétravail ou hybride
           </p>
           <div className="flex flex-wrap gap-3">
             <a
@@ -87,7 +87,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
         <Reveal>
           <SectionLabel>À propos</SectionLabel>
           <p className="text-sm leading-relaxed mb-6" style={{ color: palette.muted }}>
-            Je suis quelqu'un de carré, qui aime creuser un sujet à fond et trouver comment l'améliorer. À l'aise en Python, PHP et MySQL, je développe aussi mes projets personnels pour explorer le développement web — de l'idée à la mise en ligne.
+            Je suis quelqu'un de méthodique, qui aime creuser un sujet à fond et trouver comment l'améliorer. À l'aise en Python, PHP et MySQL, je développe aussi mes projets personnels pour explorer le développement web, de l'idée à la mise en ligne.
           </p>
           <div className="flex flex-wrap gap-2">
             {skills.map((s) => (
@@ -167,7 +167,7 @@ export default function Homepage({ projects = [], certifications = [] }) {
           <SectionLabel>Certifications</SectionLabel>
           {certifications.length === 0 ? (
             <p className="text-sm" style={{ color: palette.muted }}>
-              Pas de certification pour le moment — cette section sera mise à jour au fil de mes apprentissages.
+              Pas de certification pour le moment. Cette section sera mise à jour au fil de mes apprentissages.
             </p>
           ) : (
             <div className="flex flex-col gap-3">

@@ -1,4 +1,4 @@
-# Portfolio — Tom Rolling
+# Portfolio de Tom Rolling
 
 Site en Next.js (App Router). Le design vient du prototype validé (thème terminal, palette Nord).
 
@@ -50,12 +50,12 @@ Une fois déployé, on connectera Supabase pour rendre les projets dynamiques (a
 ## Configuration Supabase
 
 1. Crée un projet sur https://supabase.com
-2. Dans **SQL Editor**, colle et exécute le contenu de `supabase/schema.sql` — ça crée les tables `projects`, `certifications`, `messages` et `page_views`, active la sécurité (RLS), et insère ton projet Jardin Idle
+2. Dans **SQL Editor**, colle et exécute le contenu de `supabase/schema.sql` : ça crée les tables `projects`, `certifications`, `messages` et `page_views`, active la sécurité (RLS), et insère ton projet Jardin Idle
 
    ⚠️ Si tu as un projet Supabase déjà configuré avec une version précédente de ce schéma, exécute plutôt uniquement les fichiers `supabase/migration_*.sql` que tu n'as pas encore exécutés (`migration_add_messages.sql`, `migration_add_pageviews.sql`, `migration_add_project_details.sql`), pour ajouter les tables/colonnes manquantes sans tout recréer.
 3. Dans **Project Settings > API Keys** (onglet "Publishable and secret API keys"), récupère `Project URL` et la clé `Publishable key` (commence par `sb_publishable_...`)
 4. Copie `.env.local.example` vers `.env.local` et colle-y ces deux valeurs
-5. Redémarre `npm run dev` — la page d'accueil va maintenant chercher les projets dans Supabase au lieu d'une liste codée en dur
+5. Redémarre `npm run dev` : la page d'accueil va maintenant chercher les projets dans Supabase au lieu d'une liste codée en dur
 
 ### Créer ton compte admin
 
@@ -66,6 +66,6 @@ Il n'y a pas de formulaire d'inscription publique sur `/admin` (volontaire, pour
 3. Renseigne ton email et un mot de passe
 4. Va sur `http://localhost:3000/admin` et connecte-toi avec ces identifiants
 
-Une fois connecté, tu peux ajouter/modifier/supprimer tes projets et certifications — ils apparaissent immédiatement sur la page d'accueil.
+Une fois connecté, tu peux ajouter/modifier/supprimer tes projets et certifications, et ils apparaissent immédiatement sur la page d'accueil.
 
-⚠️ Ne commite jamais `.env.local` (déjà exclu par `.gitignore`) et ne partage jamais la clé **Secret** (`sb_secret_...`) de Supabase — seule la clé **Publishable** (`sb_publishable_...`) doit être utilisée ici.
+⚠️ Ne commite jamais `.env.local` (déjà exclu par `.gitignore`) et ne partage jamais la clé **Secret** (`sb_secret_...`) de Supabase. Seule la clé **Publishable** (`sb_publishable_...`) doit être utilisée ici.

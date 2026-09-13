@@ -7,7 +7,7 @@ const supabase = createClient(
 );
 
 // Enregistre une vue de page. La localisation vient des en-têtes que Vercel
-// ajoute automatiquement en périphérie de son réseau (pays/ville) — l'adresse
+// ajoute automatiquement en périphérie de son réseau (pays/ville). L'adresse
 // IP du visiteur n'est jamais lue ni stockée ici.
 export async function POST(request) {
   try {

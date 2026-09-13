@@ -27,7 +27,7 @@ export default function CertificationsListPage({ certifications = [] }) {
 
         {certifications.length === 0 ? (
           <p className="text-sm" style={{ color: palette.muted }}>
-            Pas de certification pour le moment — cette section sera mise à jour au fil de mes apprentissages.
+            Pas de certification pour le moment. Cette section sera mise à jour au fil de mes apprentissages.
           </p>
         ) : (
           <div className="flex flex-col gap-3">
