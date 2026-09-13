@@ -1,7 +1,7 @@
 {
-  "name": "Jardin Idle",
-  "short_name": "Jardin Idle",
-  "description": "Un jeu idle de jardinage : clique, améliore, cherche, prestige.",
+  "name": "FUZZ",
+  "short_name": "FUZZ",
+  "description": "FUZZ, un jeu idle de jardinage : clique, améliore, cherche, prestige.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

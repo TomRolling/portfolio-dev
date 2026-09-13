@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#43a047">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Jardin Idle">
-<meta name="description" content="Jardin Idle - un jeu idle de jardinage : clique, améliore, cherche, prestige.">
+<meta name="apple-mobile-web-app-title" content="FUZZ">
+<meta name="description" content="FUZZ, un jeu idle de jardinage : clique, améliore, cherche, prestige.">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>Jardin Idle - MVP complet</title>
+<title>FUZZ</title>
 <script>
   // Calcule la hauteur RÉELLE visible (plus fiable que 100dvh seul sur iOS,
   // où la barre d'adresse de Safari et le mode PWA installé ne sont pas
@@ -349,7 +349,7 @@
 <body class="theme-1" id="bodyEl">
 
 <div class="topBar">
-  <h1>🌱 Jardin Idle</h1>
+  <h1>🌱 FUZZ</h1>
   <div class="weatherBadge" id="weatherBadge"></div>
   <div class="statsRow">
     <div class="statChip verdure" id="verdureCount">0</div>
@@ -397,7 +397,7 @@
     </div>
 
     <div class="tabPanel" id="tab-clic">
-      <p style="font-size:12px;opacity:0.7;">Renforce tes clics — certaines améliorations ajoutent un % de ta production/seconde à chaque clic, pour que cliquer reste utile même très loin dans la partie.</p>
+      <p style="font-size:12px;opacity:0.7;">Renforce tes clics : certaines améliorations ajoutent un % de ta production/seconde à chaque clic, pour que cliquer reste utile même très loin dans la partie.</p>
       <div id="clickShop"></div>
     </div>
 
@@ -1352,7 +1352,7 @@ function renderNextPurchaseBar() {
   if (!target) { fill.style.width = '100%'; label.textContent = 'Tout est abordable en ce moment !'; return; }
   const pct = Math.min(100, (state.verdure / targetCost) * 100);
   fill.style.width = pct.toFixed(1) + '%';
-  label.textContent = `Prochain : ${target.name} — ${formatNum(state.verdure)} / ${formatNum(targetCost)} 🌿`;
+  label.textContent = `Prochain : ${target.name} (${formatNum(state.verdure)} / ${formatNum(targetCost)} 🌿)`;
 }
 
 function renderStats() {
@@ -1361,7 +1361,7 @@ function renderStats() {
   document.getElementById('seedsText').textContent = `${formatNum(state.cosmicSeeds)} Graines Cosmiques 🌌`;
   document.getElementById('knowledgeText').textContent = `${formatNum(state.knowledge)} Connaissances 📚 (+${formatNum(knowledgeRate())}/s)`;
   const w = WEATHERS[state.weather] || WEATHERS.soleil;
-  document.getElementById('weatherBadge').textContent = `${w.label} — production x${weatherMultiplier().toFixed(2)}`;
+  document.getElementById('weatherBadge').textContent = `${w.label} : production x${weatherMultiplier().toFixed(2)}`;
   document.getElementById('bodyEl').className = getThemeClass() + (state.forceDarkMode ? ' darkOverride' : '');
   renderNextPurchaseBar();
 
@@ -1409,7 +1409,7 @@ function renderShop() {
     div.innerHTML = `
       <div class="info">
         <div class="name">${b.name} <span class="owned">${owned}</span></div>
-        <div class="desc">${b.desc} — ${formatNum(b.baseCps)}/s chacun</div>
+        <div class="desc">${b.desc} (${formatNum(b.baseCps)}/s chacun)</div>
         ${synBonus > 0 ? `<div class="synergy">Synergie active : +${(synBonus*100).toFixed(0)}%</div>` : ''}
       </div>
       <div class="price">${state.buyMode === 'max' ? 'x' + n + ' : ' : ''}${formatNum(cost)} 🌿</div>
@@ -1627,7 +1627,7 @@ function renderNextGoal() {
   }
   if (!best) { box.style.display = 'none'; return; }
   box.style.display = 'block';
-  box.innerHTML = `🎯 Objectif suivant : <b>${best.a.name}</b> — ${best.a.desc}
+  box.innerHTML = `🎯 Objectif suivant : <b>${best.a.name}</b><br>${best.a.desc}
     <div class="nextGoalBarWrap"><div class="nextGoalBarFill" style="width:${best.pct}%;"></div></div>`;
 }
 
@@ -1680,8 +1680,8 @@ function renderStatsTab() {
     ['Verdure totale gagnée (cette vie)', formatNum(state.totalEarned)],
     ['Production actuelle', formatNum(totalCps()) + '/s'],
     ['Gain par clic (total)', formatNum(clickGain())],
-    ['— dont part fixe', formatNum(1 * totalProdMultiplier() * totalClickFlatMultiplier())],
-    ['— dont % de la production/s', formatNum(totalCps() * totalClickCpsPercent()) + ` (${(totalClickCpsPercent()*100).toFixed(0)}% de la prod)`],
+    ['↳ dont part fixe', formatNum(1 * totalProdMultiplier() * totalClickFlatMultiplier())],
+    ['↳ dont % de la production/s', formatNum(totalCps() * totalClickCpsPercent()) + ` (${(totalClickCpsPercent()*100).toFixed(0)}% de la prod)`],
     ['Clics totaux', formatNum(state.totalClicks)],
     ['Mauvaises herbes dorées cliquées', formatNum(state.goldenClicked)],
     ['Graines Cosmiques', formatNum(state.cosmicSeeds)],
@@ -1756,7 +1756,7 @@ function renderAll() {
 
 // ================= TITRE D'ONGLET DYNAMIQUE =================
 function updateDocumentTitle() {
-  document.title = `🌱 +${formatNum(totalCps())}/s — Jardin Idle`;
+  document.title = `🌱 +${formatNum(totalCps())}/s · FUZZ`;
 }
 
 // ================= CLICK =================
@@ -1956,7 +1956,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   const d = new Date();
   const stamp = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   a.href = url;
-  a.download = `jardin-idle-save-${stamp}.txt`;
+  a.download = `fuzz-save-${stamp}.txt`;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -2006,7 +2006,7 @@ document.getElementById('restoreBackupBtn').addEventListener('click', () => {
   } catch(e) { alert('Sauvegarde de secours corrompue.'); }
 });
 document.getElementById('shareBtn').addEventListener('click', () => {
-  const text = `🌱 Jardin Idle — Mon jardin :\n` +
+  const text = `🌱 FUZZ, mon jardin :\n` +
     `${formatNum(state.totalEarned)} Verdure gagnée\n` +
     `${state.cosmicSeeds} Graines Cosmiques\n` +
     `${state.prestigeCount} prestiges effectués\n` +

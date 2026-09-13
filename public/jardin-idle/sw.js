@@ -1,7 +1,7 @@
 // Service worker minimal : met en cache l'app pour un chargement hors-ligne.
 // La sauvegarde du jeu reste dans localStorage (gérée par index.html), ce service
 // worker ne fait que permettre au jeu de s'ouvrir sans connexion une fois visité.
-const CACHE_NAME = 'jardin-idle-cache-v1';
+const CACHE_NAME = 'fuzz-cache-v2';
 const APP_SHELL = [
   './',
   './index.html',
