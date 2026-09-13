@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { palette, styleSheet } from "@/lib/theme";
 import { Reveal } from "@/components/Reveal";
 import { SiteTopBar, SiteFooter } from "@/components/SiteChrome";
@@ -31,29 +31,39 @@ export default function CertificationsListPage({ certifications = [] }) {
           </p>
         ) : (
           <div className="flex flex-col gap-3">
-            {certifications.map((c) => (
-              <Reveal key={c.id}>
-                <div className="list-card flex items-center justify-between gap-6 p-4 rounded-lg" style={{ border: `1px solid ${palette.border}` }}>
+            {certifications.map((c) => {
+              const detailHref = c.slug ? `/certifications/${c.slug}` : c.credential_url;
+              const isExternal = !c.slug && Boolean(c.credential_url);
+              const content = (
+                <>
                   <div>
-                    {c.slug ? (
-                      <a href={`/certifications/${c.slug}`} className="list-card-title text-sm font-medium" style={{ color: palette.text, textDecoration: "none" }}>
-                        {c.name}
-                      </a>
-                    ) : (
-                      <p className="list-card-title text-sm font-medium">{c.name}</p>
-                    )}
-                    <p className="text-xs" style={{ color: palette.muted }}>
+                    <h3 className="list-card-title text-base font-medium mb-1">{c.name}</h3>
+                    <p className="text-sm" style={{ color: palette.muted }}>
                       {c.organization}{c.cert_date ? ` — ${new Date(c.cert_date).getFullYear()}` : ""}
                     </p>
                   </div>
-                  {c.slug ? (
-                    <a href={`/certifications/${c.slug}`} className="text-xs" style={{ color: palette.cyan }}>Voir →</a>
-                  ) : c.credential_url ? (
-                    <a href={c.credential_url} target="_blank" rel="noreferrer" className="text-xs" style={{ color: palette.cyan }}>Voir →</a>
-                  ) : null}
-                </div>
-              </Reveal>
-            ))}
+                  {detailHref && <ArrowRight size={18} className="project-arrow shrink-0" style={{ color: palette.muted }} />}
+                </>
+              );
+              return (
+                <Reveal key={c.id}>
+                  {detailHref ? (
+                    <a
+                      href={detailHref}
+                      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+                      className="list-card flex items-center justify-between gap-6 p-4 rounded-lg"
+                      style={{ border: `1px solid ${palette.border}` }}
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div className="flex items-center justify-between gap-6 p-4 rounded-lg" style={{ border: `1px solid ${palette.border}` }}>
+                      {content}
+                    </div>
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         )}
       </section>

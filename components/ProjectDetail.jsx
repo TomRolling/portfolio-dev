@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, FileText, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, ExternalLink, Download } from "lucide-react";
 import { palette, styleSheet } from "@/lib/theme";
 import { Reveal } from "@/components/Reveal";
 import { SiteTopBar, SiteFooter } from "@/components/SiteChrome";
@@ -69,17 +69,31 @@ function PdfBlock({ url, text }) {
           <FileText size={15} style={{ color: palette.green, flexShrink: 0 }} />
           <span className="truncate">{label}</span>
         </span>
-        <a href={url} target="_blank" rel="noreferrer" className="pill-btn text-xs shrink-0" style={{ color: palette.muted }}>
-          Ouvrir <ExternalLink size={13} />
-        </a>
+        <div className="flex items-center gap-2 shrink-0">
+          <a href={url} download className="pill-btn text-xs" style={{ color: palette.muted }}>
+            <Download size={13} /> Télécharger
+          </a>
+          <a href={url} target="_blank" rel="noreferrer" className="pill-btn text-xs" style={{ color: palette.muted }}>
+            Ouvrir <ExternalLink size={13} />
+          </a>
+        </div>
       </div>
       {isDesktop && (
+        // toolbar=0&navpanes=0 masque la barre d'outils et le panneau de vignettes
+        // de la visionneuse du navigateur, qui jurent avec le theme du site ;
+        // view=FitH ajuste la page a la largeur du cadre. Le ratio A4 paysage
+        // evite la grande zone vide d'une hauteur fixe.
         <iframe
-          src={`${url}#view=FitH`}
+          src={`${url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
           title={label}
           loading="lazy"
-          className="w-full"
-          style={{ height: 620, border: 0, borderTop: `1px solid ${palette.border}`, backgroundColor: palette.bg }}
+          className="w-full block"
+          style={{
+            aspectRatio: "297 / 210",
+            border: 0,
+            borderTop: `1px solid ${palette.border}`,
+            backgroundColor: palette.panel,
+          }}
         />
       )}
     </div>
